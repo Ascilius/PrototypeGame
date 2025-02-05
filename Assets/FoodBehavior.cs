@@ -1,13 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class FoodBehavior : MonoBehaviour {
 
-  [SerializeField] private Vector2 loc;
-    
+  private SnakeController snakeObject;
+
+  // make sure new food location does not collide with snake
   void newPos() {
-    loc = new Vector2((int)(Random.value * 9) - 4, (int)(Random.value * 5) - 2);
-    this.transform.position = loc;
+    bool pass = false;
+    while (!pass) {
+      this.transform.position = new Vector2((int)(Random.value * 9) - 4, (int)(Random.value * 5) - 2);
+      
+      List<GameObject> snake = snakeObject.getSnake();
+      pass = true;
+      foreach (GameObject body in snake)
+      {
+        if (body.transform.position.Equals(this.transform.position)) {
+          pass = false;
+          break;
+        }
+      }
+    }
   }
 
   // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -15,6 +30,7 @@ public class FoodBehavior : MonoBehaviour {
     this.AddComponent<Rigidbody2D>();
     Rigidbody2D rb = this.GetComponent<Rigidbody2D>();
     rb.gravityScale = 0f;
+    snakeObject = GameObject.Find("Snake").GetComponent<SnakeController>();
     newPos();
   }
 
@@ -25,6 +41,5 @@ public class FoodBehavior : MonoBehaviour {
       this.tag = "Not Eaten"; // marking food as not eaten
     }
   }
-
   
 }

@@ -8,7 +8,6 @@ public class SnakeController : MonoBehaviour {
   private List<GameObject> snake;
   private uint length;
   [SerializeField] private Sprite snakeBodySprite;
-  [SerializeField] private Vector2 loc;
 
   // movement
   [SerializeField] private float movementSpeed = 1f;
@@ -23,7 +22,7 @@ public class SnakeController : MonoBehaviour {
   private GameObject food;
 
   GameObject newPart(string name, Vector2 pos) {
-    print("Debug: New part at " + pos.ToString());
+    // print("Debug: New part at " + pos.ToString());
 
     GameObject newPart = new GameObject(name);
     newPart.AddComponent<SpriteRenderer>();
@@ -43,9 +42,6 @@ public class SnakeController : MonoBehaviour {
     snake.Add(newPart);
     length++;
 
-    // tracking food game object
-    food = GameObject.Find("Food");
-
     return newPart;
   }
 
@@ -58,9 +54,11 @@ public class SnakeController : MonoBehaviour {
   void Start() {
     snake = new List<GameObject>();
     length = 0;
-    loc = new Vector2(0f, 0f);
 
-    head = newPart("Head", loc);
+    head = newPart("Head", new Vector2(0f, 0f));
+
+    // tracking food game object
+    food = GameObject.Find("Food");
 
     startTime = Time.time;
   }
@@ -76,19 +74,23 @@ public class SnakeController : MonoBehaviour {
       updatedDirection = new Vector2(hor, 0f);
     else
       updatedDirection = new Vector2(0f, ver);
+    
+    updatedDirection.Normalize();
 
-    // rejecting no direction change
-    if (!updatedDirection.Equals(nullDirection))
-    {
+    // rejecting no direction change and reverse direction
+    Vector2 reverseDirection = new Vector2(movementDirection.x * -1, movementDirection.y * -1);
+    // print("Debug: movementDirection: " + movementDirection);
+    // print("Debug: reverseDirection: " + reverseDirection);
+    if (!(updatedDirection.Equals(nullDirection) || updatedDirection.Equals(reverseDirection))) {
       movementDirection = updatedDirection;
-      print("Debug: Direction updated: " + movementDirection.ToString());
+      // print("Debug: Direction updated: " + movementDirection.ToString());
     }
   }
 
   private void FixedUpdate() {
     float totalTime = Time.time - startTime;
     if ((totalTime > intervalTime) && (!movementDirection.Equals(nullDirection))) {
-      loc += movementDirection.normalized * movementSpeed;
+      Vector3 loc = head.transform.position + (Vector3) (movementDirection * movementSpeed);
       startTime = Time.time; // reset timer
 
       // move snake
@@ -97,10 +99,15 @@ public class SnakeController : MonoBehaviour {
 
       // eating
       Vector2 foodLoc = food.transform.position;
-      if (loc.Equals(foodLoc))
+      if (head.transform.position.Equals(foodLoc))
         food.tag = "Eaten"; // marking food as eaten
       else
         destroyTail();
     }
+  }
+
+  public List<GameObject> getSnake()
+  {
+    return snake;
   }
 }
