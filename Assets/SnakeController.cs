@@ -26,17 +26,14 @@ public class SnakeController : MonoBehaviour {
 
     GameObject newPart = new GameObject(name);
     newPart.AddComponent<SpriteRenderer>();
-    newPart.AddComponent<Rigidbody2D>();
     newPart.transform.parent = this.transform; // setting newPart as part of the snake
 
     // adding sprite
     SpriteRenderer sr = newPart.GetComponent<SpriteRenderer>();
     sr.sprite = snakeBodySprite;
 
-    // disabling gravity / setting position
-    Rigidbody2D rb = newPart.GetComponent<Rigidbody2D>();
-    rb.gravityScale = 0f;
-    rb.transform.position = pos;
+    // setting position
+    newPart.transform.position = pos;
 
     // tracking new snake part
     snake.Add(newPart);
@@ -110,4 +107,5 @@ public class SnakeController : MonoBehaviour {
   {
     return snake;
   }
+
 }

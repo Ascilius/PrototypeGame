@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class FoodBehavior : MonoBehaviour {
-
+  
   private SnakeController snakeObject;
 
   // make sure new food location does not collide with snake
@@ -27,9 +27,6 @@ public class FoodBehavior : MonoBehaviour {
 
   // Start is called once before the first execution of Update after the MonoBehaviour is created
   void Start() {
-    this.AddComponent<Rigidbody2D>();
-    Rigidbody2D rb = this.GetComponent<Rigidbody2D>();
-    rb.gravityScale = 0f;
     snakeObject = GameObject.Find("Snake").GetComponent<SnakeController>();
     newPos();
   }
@@ -41,5 +38,10 @@ public class FoodBehavior : MonoBehaviour {
       this.tag = "Not Eaten"; // marking food as not eaten
     }
   }
-  
+
+  // returns save data in JSON format
+  public string getSaveData() {
+    return this.transform.position.ToString();
+  }
+
 }
