@@ -2,21 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class SnakeController : MonoBehaviour {
 
+  // snake
   private GameObject head;
   private List<GameObject> snake;
-  private uint length;
-  [SerializeField] private Sprite snakeBodySprite;
+  [SerializeField] public uint length;
+  [SerializeField] public Sprite snakeBodySprite;
 
   // movement
-  [SerializeField] private float movementSpeed = 1f;
-  private Vector2 nullDirection = new Vector2(0f, 0f);
+  [SerializeField] public float movementSpeed = 1f;
+  private Vector2 nullDirection = new Vector2(0f, 0f); 
   private Vector2 movementDirection;
 
   // timing
   private float startTime;
-  [SerializeField] private float intervalTime = 0.5f;
+  [SerializeField] public float intervalTime = 0.5f;
 
   // food
   private GameObject food;
@@ -45,6 +47,7 @@ public class SnakeController : MonoBehaviour {
   void destroyTail() {
     GameObject.Destroy(snake[0]); // destorying fifo
     snake.Remove(snake[0]); // removing tracking from internal list
+    length--;
   }
 
   // Start is called once before the first execution of Update after the MonoBehaviour is created
