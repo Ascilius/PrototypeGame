@@ -1,1 +1,2 @@
-Z{"length":4,"snakeBodySprite":{"instanceID":44450},"movementSpeed":1.0,"intervalTime":0.5}
+þ{"partLocs":[{"x":2.0,"y":-2.0},{"x":3.0,"y":-2.0},{"x":4.0,"y":-2.0},{"x":5.0,"y":-2.0},{"x":6.0,"y":-2.0}],"saveLength":5,"snakeBodySprite":{"instanceID":44450},"alive":true,"movementSpeed":1.0,"movementDirection":{"x":1.0,"y":0.0},"intervalTime":0.5}
+{"loc":{"x":1.0,"y":1.0}}
